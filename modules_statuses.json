@@ -21,5 +21,6 @@
     "PaymentWithdraw": true,
     "OurTeam": true,
     "Testimonial": true,
-    "Faq": true
+    "Faq": true,
+    "Test": true
 }
