@@ -1,0 +1,15 @@
+<div class="form-group">
+    <label for="$LABLE$">
+        {{ __('$LABLE$') }}
+        <span class="text-danger">
+            $RQUIRED$
+        </span>
+    </label>
+    <input type="text" id="$NAME$" name="$NAME$" value="{{ old('$NAME$') }}"
+    placeholder="$PLACEHOLDER$" class="form-control">
+    @error('$NAME$')
+    <span class="text-danger">
+        {{ $message }}
+    </span>
+    @enderror
+</div>

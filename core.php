@@ -1,13 +1,13 @@
 <?php
 
 return [
-    "moduled" => "test",
-    "model" => "test",
+    "module" => 'Test',
+    "model" => "Test",
     "sub_folder" => true,
 
     "fields" => [
         [
-            // "type" => "text_field",
+            "type" => "text_field",
             "name" => "category",
             "label" => "Category Name",
             "validation" => ['required', 'max:255'],
