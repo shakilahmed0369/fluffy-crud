@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Xcore\MigrationGenerator;
 use App\Xcore\ModelGenerator;
 use App\Xcore\Validator;
 use App\Xcore\ViewGenerator;
@@ -33,8 +34,11 @@ class CoreGenerator extends Command
         $validator = new Validator($this->baseArray());
         $validator->validaateBaseArray();
 
-        $model = new ModelGenerator($this->baseArray());
-        $model->generate();
+        // $model = new ModelGenerator($this->baseArray());
+        // $model->generate();
+
+        $migration = new MigrationGenerator($this->baseArray());
+        $migration->generate();
     }
 
     /**

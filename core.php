@@ -13,6 +13,13 @@ return [
             "validation" => ['required', 'max:255'],
             "default" => "",
         ],
+        [
+            "type" => "text_field",
+            "name" => "slug",
+            "label" => "",
+            "validation" => ['required', 'max:255'],
+            "default" => "",
+        ],
         // [
         //     "type" => "select_field",
         //     "label" => "Status",

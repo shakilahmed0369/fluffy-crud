@@ -36,7 +36,7 @@ class ModelGenerator
 
         file_put_contents($modelFilePath, $template);
 
-        echo "Model Generated Successfully: $modelFilePath"."\n";
+        echo "Model Generated Successfully: $modelFilePath" . "\n";
     }
 
 
@@ -44,8 +44,10 @@ class ModelGenerator
     {
         $files = "";
         foreach ($this->coreArray['fields'] as $field) {
-            $fieldName = $field['name'];
-            $files .= "'$fieldName', ";
+            if ($field['type'] !== 'column') {
+                $fieldName = $field['name'];
+                $files .= "'$fieldName', ";
+            }
         }
 
         return $files;
