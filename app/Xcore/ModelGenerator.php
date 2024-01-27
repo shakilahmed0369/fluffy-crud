@@ -44,10 +44,8 @@ class ModelGenerator
     {
         $files = "";
         foreach ($this->coreArray['fields'] as $field) {
-            if ($field['type'] !== 'column') {
                 $fieldName = $field['name'];
                 $files .= "'$fieldName', ";
-            }
         }
 
         return $files;

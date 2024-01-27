@@ -33,7 +33,7 @@ class MigrationGenerator
         $template = str_replace('$COLUMNS$', $this->generateColumns(), $template);
 
         $migrationFileName = $this->generateMigrationName($this->tableName);
-        $migrationFilePath = $this->migrationPath. '/' . $migrationFileName. '.php';
+        $migrationFilePath = $this->migrationPath . '/' . $migrationFileName . '.php';
 
         file_put_contents($migrationFilePath, $template);
 
@@ -48,7 +48,13 @@ class MigrationGenerator
         foreach ($this->coreArray['fields'] as $entity) {
             switch ($entity['type']) {
                 case 'text_field':
-                    $columns .= '$table->string("' . Str::snake($entity['name']) . '");' . "\n\t\t\t";
+                    $chains = $this->processChain($entity['chain']);
+                    $columns .= '$table->string("' . Str::snake($entity['name']) . '")' . $chains . ";" .  "\n\t\t\t";
+                    break;
+
+                case 'column':
+                    $chains = $this->processChain($entity['chain']);
+                    $columns .= '$table->' . $entity['data_type'] . '("' . Str::snake($entity['name']) . '")' . $chains . ";" . "\n\t\t\t";
                     break;
 
                 default:
@@ -57,6 +63,20 @@ class MigrationGenerator
             }
         }
         return $columns;
+    }
+
+    function processChain($chainsArray = [])
+    {
+        $chains = "";
+        foreach ($chainsArray as $key => $chain) {
+            if ($chain === null) {
+                $chains .= "->" . $key . "(" . $chain . ")";
+            } else {
+                $chains .= "->" . $key . "('" . $chain . "')";
+            }
+        }
+
+        return $chains;
     }
 
     function generateMigrationName($name)

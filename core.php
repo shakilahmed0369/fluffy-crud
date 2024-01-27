@@ -12,6 +12,9 @@ return [
             "label" => "Category Name",
             "validation" => ['required', 'max:255'],
             "default" => "",
+            "chain" => [
+                "nullable" => null
+            ]
         ],
         [
             "type" => "text_field",
@@ -19,6 +22,16 @@ return [
             "label" => "",
             "validation" => ['required', 'max:255'],
             "default" => "",
+            "chain" => []
+        ],
+        [
+            "type" => "column",
+            "name" => "icon_id",
+            "data_type" => "foreignId",
+            "validation" => ['required', 'max:255'],
+            "chain" => [
+                "nullable" => true
+            ]
         ],
         // [
         //     "type" => "select_field",
