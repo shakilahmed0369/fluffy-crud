@@ -32,13 +32,16 @@ class CoreGenerator extends Command
     {
         // validate core array structure
         $validator = new Validator($this->baseArray());
-        $validator->validaateBaseArray();
+        // $validator->validaateBaseArray();
 
         // $model = new ModelGenerator($this->baseArray());
         // $model->generate();
 
         $migration = new MigrationGenerator($this->baseArray());
-        $migration->generate();
+        // $migration->generate();
+
+        $view = new ViewGenerator($this->baseArray());
+        $view->generate();
     }
 
     /**

@@ -49,7 +49,7 @@ class MigrationGenerator
             switch ($entity['type']) {
                 case 'text_field':
                     $chains = $this->processChain($entity['chain']);
-                    $columns .= '$table->string("' . Str::snake($entity['name']) . '")' . $chains . ";" .  "\n\t\t\t";
+                    $columns .= '$table->'.$entity['data_type'].'("' . Str::snake($entity['name']) . '")' . $chains . ";" .  "\n\t\t\t";
                     break;
 
                 case 'column':

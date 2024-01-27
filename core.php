@@ -9,7 +9,7 @@ return [
         [
             "type" => "text_field",
             "name" => "category",
-            "label" => "Category Name",
+            "data_type" => "string",
             "validation" => ['required', 'max:255'],
             "default" => "",
             "chain" => [
@@ -19,7 +19,7 @@ return [
         [
             "type" => "text_field",
             "name" => "slug",
-            "label" => "",
+            "data_type" => "string",
             "validation" => ['required', 'max:255'],
             "default" => "",
             "chain" => []
