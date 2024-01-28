@@ -35,7 +35,11 @@ class ViewGenerator
                     $textTemplate = file_get_contents(app_path('Xcore/src/views/components/text_field.stub'));
                     $textTemplate = str_replace('$LABEL$', $label, $textTemplate);
                     $textTemplate = str_replace('$NAME$', $entity['name'], $textTemplate);
-
+                    if(in_array('required', $entity['validation'])) {
+                        $textTemplate = str_replace('$REQUIRED$', '*', $textTemplate);
+                    }else {
+                        $textTemplate = str_replace('$REQUIRED$', '', $textTemplate);
+                    }
                     $fieldsHtml .= $textTemplate."\n";
 
                     break;
@@ -50,11 +54,13 @@ class ViewGenerator
         $template = str_replace('$ROUTE$', $routeName, $template);
         $template = str_replace('$FIELDS$', $fieldsHtml, $template);
 
-        dd($template);
+        if($this->coreArray['sub_folder'] == true) {
+            $modelFilePath = $this->viewPath. '/'. $routeName .  'create.blade.php';
+        }else {
+            $modelFilePath = $this->viewPath. '/' . 'create.blade.php';
+        }
 
-        // $modelFilePath = $this->modelPath . '/' . $this->modelName . '.php';
-
-        // file_put_contents($modelFilePath, $template);
+        file_put_contents($modelFilePath, $template);
 
         // echo "Model Generated Successfully: $modelFilePath" . "\n";
     }
