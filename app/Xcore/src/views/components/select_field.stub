@@ -1,0 +1,12 @@
+                                            <div class="">
+                                                <div class="form-group">
+                                                    <label for="title">{{ __('$LABEL$') }}<span
+                                                            class="text-danger">$REQUIRED$</span></label>
+                                                    <select name="$NAME$" class="form-control">
+$OPTIONS$
+                                                    </select>
+                                                    @error('$NAME$')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>

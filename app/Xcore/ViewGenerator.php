@@ -44,6 +44,29 @@ class ViewGenerator
 
                     break;
 
+                case 'select_field':
+                    $label = str_replace('_', ' ', $entity['name']);
+                    $options = "";
+
+                    // handle options
+                    foreach($entity['default'] as $option) {
+                        $options  .= '<option value="' . $option['value'] . '" >' . $option['name'] . '</option>'."\n";
+                    }
+
+                    $textTemplate = file_get_contents(app_path('Xcore/src/views/components/select_field.stub'));
+                    $textTemplate = str_replace('$LABEL$', $label, $textTemplate);
+                    $textTemplate = str_replace('$NAME$', $entity['name'], $textTemplate);
+                    $textTemplate = str_replace('$OPTIONS$', $options, $textTemplate);
+
+                    if(in_array('required', $entity['validation'])) {
+                        $textTemplate = str_replace('$REQUIRED$', '*', $textTemplate);
+                    }else {
+                        $textTemplate = str_replace('$REQUIRED$', '', $textTemplate);
+                    }
+
+                    $fieldsHtml .= $textTemplate."\n";
+
+                    break;
                 default:
                     # code...
                     break;
@@ -54,10 +77,17 @@ class ViewGenerator
         $template = str_replace('$ROUTE$', $routeName, $template);
         $template = str_replace('$FIELDS$', $fieldsHtml, $template);
 
-        if($this->coreArray['sub_folder'] == true) {
-            $modelFilePath = $this->viewPath. '/'. $routeName .  'create.blade.php';
-        }else {
-            $modelFilePath = $this->viewPath. '/' . 'create.blade.php';
+        if ($this->coreArray['sub_folder'] == true) {
+            $subFolderPath = $this->viewPath . '/' . $routeName;
+
+            // Check if the sub-folder exists, if not, create it
+            if (!file_exists($subFolderPath)) {
+                mkdir($subFolderPath, 0777, true); // Create the sub-folder recursively
+            }
+
+            $modelFilePath = $subFolderPath . '/create.blade.php';
+        } else {
+            $modelFilePath = $this->viewPath . '/create.blade.php';
         }
 
         file_put_contents($modelFilePath, $template);
@@ -66,9 +96,6 @@ class ViewGenerator
     }
 
 
-    function getFiles()
-    {
-    }
 
     function validator()
     {

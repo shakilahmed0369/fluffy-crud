@@ -15,5 +15,5 @@ use Modules\Test\app\Http\Controllers\TestController;
 */
 
 Route::group([], function () {
-    Route::resource('test', TestController::class)->names('test');
+    Route::resource('test', TestController::class)->names('admin.test');
 });

@@ -3,7 +3,7 @@
 return [
     "module" => 'Test',
     "model" => "Test",
-    "sub_folder" => true,
+    "sub_folder" => false,
 
     "fields" => [
         [
@@ -23,6 +23,17 @@ return [
             "validation" => ['required', 'max:255'],
             "default" => "",
             "chain" => []
+        ],
+        [
+            "type" => "select_field",
+            "name" => "status",
+            "data_type" => "integer",
+            "validation" => ['required', 'boolean'],
+            "default" => [
+                ["name" => "Active", "value" => 1],
+                ["name" => "Inactive", "value" => 0],
+            ],
+            "chain" => ["default" => 0]
         ],
         [
             "type" => "column",
