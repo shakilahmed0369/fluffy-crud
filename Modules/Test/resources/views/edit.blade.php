@@ -41,7 +41,7 @@
                                                     <label for="title">{{ __('category') }}<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" id="category" name="category"
-                                                        value="{{ old('category', $test->category) }}" placeholder="Enter category"
+                                                        value="{{ old('category', {{ $test->category }}) }}" placeholder="Enter category"
                                                         class="form-control">
                                                     @error('category')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -54,7 +54,7 @@
                                                     <label for="title">{{ __('slug') }}<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" id="slug" name="slug"
-                                                        value="{{ old('slug', $test->slug) }}" placeholder="Enter slug"
+                                                        value="{{ old('slug', {{ $test->slug }}) }}" placeholder="Enter slug"
                                                         class="form-control">
                                                     @error('slug')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -90,7 +90,7 @@
 
 
 
-                                            </ x-admin.save-button :text="__('admin.Update')">
+                                            <x-admin.save-button :text="__('admin.Update')" />
                                         </div>
                                     </div>
                                 </form>

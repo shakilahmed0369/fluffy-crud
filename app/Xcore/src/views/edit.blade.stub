@@ -38,7 +38,7 @@
 
 $FIELDS$
 
-                                            </ x-admin.save-button :text="__('admin.Update')">
+                                            <x-admin.save-button :text="__('admin.Update')" />
                                         </div>
                                     </div>
                                 </form>
