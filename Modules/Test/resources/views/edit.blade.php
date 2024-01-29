@@ -15,7 +15,7 @@
                     <div class="breadcrumb-item active"><a
                             href="{{ route('admin.test.index') }}">{{ __('Test List') }}</a>
                     </div>
-                    <div class="breadcrumb-item">{{ __('Add Category') }}</div>
+                    <div class="breadcrumb-item">{{ __('Edit Test') }}</div>
                 </div>
             </div>
             <div class="section-body">
@@ -23,15 +23,16 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between">
-                                <h4>{{ __('Add Category') }}</h4>
+                                <h4>{{ __('Edit Test') }}</h4>
                                 <div>
                                     <a href="{{ route('admin.test.index') }}" class="btn btn-primary"><i
                                             class="fa fa-arrow-left"></i>{{ __('Back') }}</a>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('admin.test.store') }}" method="post">
+                                <form action="{{ route('admin.test.update', $test->id) }}" method="post" enctype="multipart/form-data" >
                                     @csrf
+                                    @method("PUT")
                                     <div class="row">
                                         <div class="col-12">
 
@@ -40,7 +41,7 @@
                                                     <label for="title">{{ __('category') }}<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" id="category" name="category"
-                                                        value="{{ old('category', ) }}" placeholder="Enter category"
+                                                        value="{{ old('category', $test->category) }}" placeholder="Enter category"
                                                         class="form-control">
                                                     @error('category')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -53,7 +54,7 @@
                                                     <label for="title">{{ __('slug') }}<span
                                                             class="text-danger">*</span></label>
                                                     <input type="text" id="slug" name="slug"
-                                                        value="{{ old('slug', ) }}" placeholder="Enter slug"
+                                                        value="{{ old('slug', $test->slug) }}" placeholder="Enter slug"
                                                         class="form-control">
                                                     @error('slug')
                                                         <span class="text-danger">{{ $message }}</span>
@@ -66,8 +67,8 @@
                                                     <label for="title">{{ __('status') }}<span
                                                             class="text-danger">*</span></label>
                                                     <select name="status" class="form-control">
-<option value="active" >Active</option>
-<option value="inactive" >Inactive</option>
+<option @selected($test->status == "active") value="active" >Active</option>
+<option @selected($test->status == "inactive") value="inactive" >Inactive</option>
 
                                                     </select>
                                                     @error('status')
@@ -80,7 +81,7 @@
                                                 <div class="form-group">
                                                     <label for="title">{{ __('description') }}<span
                                                             class="text-danger">*</span></label>
-                                                    <textarea name="description" class="form-control" ></textarea>
+                                                    <textarea name="description" class="form-control" >{{ $test->description }}</textarea>
                                                     @error('description')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
@@ -89,8 +90,7 @@
 
 
 
-                                            <x-admin.save-button :text="__('admin.Save')">
-                                            </x-admin.save-button>
+                                            </ x-admin.save-button :text="__('admin.Update')">
                                         </div>
                                     </div>
                                 </form>

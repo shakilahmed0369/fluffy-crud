@@ -30,8 +30,8 @@ return [
             "data_type" => "integer",
             "validation" => ['required', 'boolean'],
             "default" => [
-                ["name" => "Active", "value" => 1],
-                ["name" => "Inactive", "value" => 0],
+                ["name" => "Active", "value" => "active"],
+                ["name" => "Inactive", "value" => "inactive"],
             ],
             "chain" => ["default" => 0]
         ],
