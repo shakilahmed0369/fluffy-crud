@@ -12,7 +12,8 @@
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="{{ route('admin.dashboard') }}">{{ __('Dashboard') }}</a>
                     </div>
-                    <div class="breadcrumb-item active"><a href="{{ route('admin.test.index') }}">{{ __('Test List') }}</a>
+                    <div class="breadcrumb-item active"><a
+                            href="{{ route('admin.test.index') }}">{{ __('Test List') }}</a>
                     </div>
                     <div class="breadcrumb-item">{{ __('Add Category') }}</div>
                 </div>
@@ -65,11 +66,22 @@
                                                     <label for="title">{{ __('status') }}<span
                                                             class="text-danger">*</span></label>
                                                     <select name="status" class="form-control">
-                                                        <option value="1">Active</option>
-                                                        <option value="0">Inactive</option>
+<option value="1" >Active</option>
+<option value="0" >Inactive</option>
 
                                                     </select>
                                                     @error('status')
+                                                        <span class="text-danger">{{ $message }}</span>
+                                                    @enderror
+                                                </div>
+                                            </div>
+
+                                            <div class="">
+                                                <div class="form-group">
+                                                    <label for="title">{{ __('description') }}<span
+                                                            class="text-danger">*</span></label>
+                                                    <textarea name="description" class="form-control" ></textarea>
+                                                    @error('description')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                 </div>

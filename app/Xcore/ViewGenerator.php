@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Xcore;
+
 use Str;
 
 class ViewGenerator
@@ -26,7 +28,7 @@ class ViewGenerator
         $template = file_get_contents(app_path('Xcore/src/views/create.stub'));
 
         $fieldsHtml = "";
-        foreach($this->coreArray['fields'] as $entity) {
+        foreach ($this->coreArray['fields'] as $entity) {
 
             switch ($entity['type']) {
                 case 'text_field':
@@ -35,12 +37,34 @@ class ViewGenerator
                     $textTemplate = file_get_contents(app_path('Xcore/src/views/components/text_field.stub'));
                     $textTemplate = str_replace('$LABEL$', $label, $textTemplate);
                     $textTemplate = str_replace('$NAME$', $entity['name'], $textTemplate);
-                    if(in_array('required', $entity['validation'])) {
+                    if (in_array('required', $entity['validation'])) {
                         $textTemplate = str_replace('$REQUIRED$', '*', $textTemplate);
-                    }else {
+                    } else {
                         $textTemplate = str_replace('$REQUIRED$', '', $textTemplate);
                     }
-                    $fieldsHtml .= $textTemplate."\n";
+                    $fieldsHtml .= $textTemplate . "\n";
+
+                    break;
+
+                case 'textarea_field':
+                    $label = str_replace('_', ' ', $entity['name']);
+
+                    $textTemplate = file_get_contents(app_path('Xcore/src/views/components/textarea_field.stub'));
+                    $textTemplate = str_replace('$LABEL$', $label, $textTemplate);
+                    $textTemplate = str_replace('$NAME$', $entity['name'], $textTemplate);
+                    if (in_array('required', $entity['validation'])) {
+                        $textTemplate = str_replace('$REQUIRED$', '*', $textTemplate);
+                    } else {
+                        $textTemplate = str_replace('$REQUIRED$', '', $textTemplate);
+                    }
+
+                    if (!empty($entity['default'])) {
+                        $textTemplate = str_replace('$DEFAULT$', $entity['default'], $textTemplate);
+                    } else {
+                        $textTemplate = str_replace('$DEFAULT$', '', $textTemplate);
+                    }
+
+                    $fieldsHtml .= $textTemplate . "\n";
 
                     break;
 
@@ -49,8 +73,8 @@ class ViewGenerator
                     $options = "";
 
                     // handle options
-                    foreach($entity['default'] as $option) {
-                        $options  .= '<option value="' . $option['value'] . '" >' . $option['name'] . '</option>'."\n";
+                    foreach ($entity['default'] as $option) {
+                        $options  .= '<option value="' . $option['value'] . '" >' . $option['name'] . '</option>' . "\n";
                     }
 
                     $textTemplate = file_get_contents(app_path('Xcore/src/views/components/select_field.stub'));
@@ -58,17 +82,14 @@ class ViewGenerator
                     $textTemplate = str_replace('$NAME$', $entity['name'], $textTemplate);
                     $textTemplate = str_replace('$OPTIONS$', $options, $textTemplate);
 
-                    if(in_array('required', $entity['validation'])) {
+                    if (in_array('required', $entity['validation'])) {
                         $textTemplate = str_replace('$REQUIRED$', '*', $textTemplate);
-                    }else {
+                    } else {
                         $textTemplate = str_replace('$REQUIRED$', '', $textTemplate);
                     }
 
-                    $fieldsHtml .= $textTemplate."\n";
+                    $fieldsHtml .= $textTemplate . "\n";
 
-                    break;
-                default:
-                    # code...
                     break;
             }
         }
@@ -93,11 +114,5 @@ class ViewGenerator
         file_put_contents($modelFilePath, $template);
 
         // echo "Model Generated Successfully: $modelFilePath" . "\n";
-    }
-
-
-
-    function validator()
-    {
     }
 }

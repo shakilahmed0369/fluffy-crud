@@ -36,6 +36,14 @@ return [
             "chain" => ["default" => 0]
         ],
         [
+            "type" => "textarea_field",
+            "name" => "description",
+            "data_type" => "text",
+            "validation" => ['required', 'max:500'],
+            "default" => "",
+            "chain" => []
+        ],
+        [
             "type" => "column",
             "name" => "icon_id",
             "data_type" => "foreignId",
@@ -44,20 +52,5 @@ return [
                 "nullable" => true
             ]
         ],
-        // [
-        //     "type" => "select_field",
-        //     "label" => "Status",
-        //     "validation" => ['required'],
-        //     "defalult" => [
-        //         ["name" => "Active", "value" => 1],
-        //         ["name" => "Inactive", "value" => 0],
-        //     ],
-        // ],
-        // [
-        //     "type" => "textaria_field",
-        //     "label" => "Category Name",
-        //     "validation" => [],
-        //     "defalult" => "",
-        // ],
     ]
 ];
