@@ -59,7 +59,7 @@ class ViewGenerator
             }
         }
 
-        $routeName = str_replace('_', '-', Str::snake($this->coreArray['model']));
+        $routeName = Str::snake($this->coreArray['route']);
         $template = str_replace('$MODEL$', $this->coreArray['model'], $template);
         $template = str_replace('$ROUTE$', $routeName, $template);
         $template = str_replace('$FIELDS$', $fieldsHtml, $template);
@@ -109,7 +109,7 @@ class ViewGenerator
             }
         }
 
-        $routeName = str_replace('_', '-', Str::snake($this->coreArray['model']));
+        $routeName = Str::snake($this->coreArray['route']);
         $template = str_replace('$MODEL$', $this->coreArray['model'], $template);
         $template = str_replace('$ROUTE$', $routeName, $template);
         $template = str_replace('$FIELDS$', $fieldsHtml, $template);

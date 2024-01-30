@@ -1,23 +1,21 @@
 <?php
 
-namespace Modules\Test\app\Http\Controllers;
+namespace Modules\$MODULE_NAME$\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Modules\Test\app\Models\Test;
+use Modules\$MODULE_NAME$\app\Models\$MODEL_NAME$;
 
-class TestController extends Controller
+class $CONTROLLER_NAME$ extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        
-        $data = Test::all();
-        return view('test:index', compact('data'));
+        $INDEX$
     }
 
     /**
@@ -25,8 +23,7 @@ class TestController extends Controller
      */
     public function create()
     {
-        
-        return view('test:create');
+        $CREATE$
     }
 
     /**
@@ -34,15 +31,7 @@ class TestController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $data = new Test();
-		$data->category = $request->category;
-		$data->slug = $request->slug;
-		$data->status = $request->status;
-		$data->description = $request->description;
-		$data->save();
-
-		return redirect()->route('test.index');
-		
+        $STORE$
     }
 
     /**

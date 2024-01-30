@@ -3,6 +3,7 @@
 return [
     "module" => 'Test',
     "model" => "Test",
+    "route" => "test",
     "sub_folder" => false,
 
     "fields" => [
