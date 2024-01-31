@@ -58,7 +58,9 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        return view('$EDIT_VIEW$');
+        
+        $data = Test::findOrFail($id);
+        return view('test:edit', compact('data'));
     }
 
     /**
@@ -66,7 +68,15 @@ class TestController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
+        $data = Test::findOrFail($id);
+		$data->category = $request->category;
+		$data->slug = $request->slug;
+		$data->status = $request->status;
+		$data->description = $request->description;
+		$data->save();
 
+		return redirect()->route('test.index');
+		
     }
 
     /**
@@ -74,6 +84,10 @@ class TestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $data = Test::findOrFail($id);
+		$data->delete();
+
+		return redirect()->route('test.index');
+		
     }
 }

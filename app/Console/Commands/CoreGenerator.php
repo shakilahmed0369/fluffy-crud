@@ -36,7 +36,7 @@ class CoreGenerator extends Command
         // $validator->validaateBaseArray();
 
         $model = new ModelGenerator($this->baseArray());
-        $model->generate();
+        // $model->generate();
 
         $migration = new MigrationGenerator($this->baseArray());
         // $migration->generate();

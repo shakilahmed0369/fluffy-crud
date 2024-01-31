@@ -37,6 +37,9 @@ class ControllerGenerator
         $template = $this->generateIndex($template);
         $template = $this->generateCreate($template);
         $template = $this->generateStore($template);
+        $template = $this->generateEdit($template);
+        $template = $this->generateUpdate($template);
+        $template = $this->generateDelete($template);
         $controllerFilePath = $this->controllerPath . '/' . $this->controllerName . '.php';
         file_put_contents($controllerFilePath, $template);
     }
@@ -74,23 +77,76 @@ class ControllerGenerator
         return $template;
     }
 
-function generateStore($template)
-{
-    $routeKey = $this->coreArray['route'];
-    $modelName = $this->coreArray['model'];
+    function generateStore($template)
+    {
+        $route = $this->coreArray['route'];
+        $modelName = $this->coreArray['model'];
 
         $code = "";
         $code .= "\$data = new {$modelName}();\n\t\t";
-        foreach($this->coreArray['fields'] as $field) {
-            if($field['type'] != 'column') {
+        foreach ($this->coreArray['fields'] as $field) {
+            if ($field['type'] != 'column') {
                 $code .= "\$data->{$field['name']} = \$request->{$field['name']};\n\t\t";
             }
         }
         $code .= "\$data->save();\n\n\t\t";
-        $code .= "return redirect()->route('{$this->coreArray['route']}.index');\n\t\t";
+        $code .= "return redirect()->route('{$route}.index');\n\t\t";
 
         $template = str_replace('$STORE$', $code, $template);
 
-    return $template;
-}
+        return $template;
+    }
+
+    function generateEdit($template) {
+        $modelName = $this->coreArray['model'];
+
+        if ($this->coreArray['sub_folder']) {
+            $code = "
+        \$data = {$modelName}::findOrFail(\$id);\n
+        return view('" . Str::kebab($this->moduleName) . ":" . Str::kebab($this->coreArray['model']) . ".edit', compact('data'));";
+            $template = str_replace('$EDIT$', $code, $template);
+        } else {
+            $code = "
+        \$data = {$modelName}::findOrFail(\$id);
+        return view('" . Str::kebab($this->moduleName) . ":edit', compact('data'));";
+            $template = str_replace('$EDIT$', $code, $template);
+        }
+
+        return $template;
+    }
+
+    function generateUpdate($template)
+    {
+        $route = $this->coreArray['route'];
+        $modelName = $this->coreArray['model'];
+
+        $code = "";
+        $code .= "\$data = {$modelName}::findOrFail(\$id);\n\t\t";
+        foreach ($this->coreArray['fields'] as $field) {
+            if ($field['type'] != 'column') {
+                $code .= "\$data->{$field['name']} = \$request->{$field['name']};\n\t\t";
+            }
+        }
+        $code .= "\$data->save();\n\n\t\t";
+        $code .= "return redirect()->route('{$route}.index');\n\t\t";
+
+        $template = str_replace('$UPDATE$', $code, $template);
+
+        return $template;
+    }
+
+    function generateDelete($template)
+    {
+        $route = $this->coreArray['route'];
+        $modelName = $this->coreArray['model'];
+
+        $code = "";
+        $code .= "\$data = {$modelName}::findOrFail(\$id);\n\t\t";
+        $code .= "\$data->delete();\n\n\t\t";
+        $code .= "return redirect()->route('{$route}.index');\n\t\t";
+
+        $template = str_replace('$DELETE$', $code, $template);
+
+        return $template;
+    }
 }

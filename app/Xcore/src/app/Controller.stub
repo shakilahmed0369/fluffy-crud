@@ -47,7 +47,7 @@ class $CONTROLLER_NAME$ extends Controller
      */
     public function edit($id)
     {
-        return view('$EDIT_VIEW$');
+        $EDIT$
     }
 
     /**
@@ -55,7 +55,7 @@ class $CONTROLLER_NAME$ extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-
+        $UPDATE$
     }
 
     /**
@@ -63,6 +63,6 @@ class $CONTROLLER_NAME$ extends Controller
      */
     public function destroy($id)
     {
-        //
+        $DELETE$
     }
 }
