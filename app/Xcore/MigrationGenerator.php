@@ -83,9 +83,10 @@ class MigrationGenerator
     {
         // Generate a timestamp to include in the migration filename
         $timestamp = now()->format('Y_m_d_His');
+        $pluralizedName = Str::plural($name);
 
         // Generate the migration filename format
-        $migrationName = $timestamp . '_create_' . str_replace(' ', '_', strtolower($name)) . '_table';
+        $migrationName = $timestamp . '_create_' . str_replace(' ', '_', strtolower($pluralizedName)) . '_table';
         return $migrationName;
     }
 

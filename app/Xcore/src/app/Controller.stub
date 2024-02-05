@@ -7,6 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\$MODULE_NAME$\app\Models\$MODEL_NAME$;
+use Modules\$MODULE_NAME$\app\Http\Requests\$MODEL_NAME$CreateRequest;
+use Modules\$MODULE_NAME$\app\Http\Requests\$MODEL_NAME$UpdateRequest;
 
 class $CONTROLLER_NAME$ extends Controller
 {
@@ -29,10 +31,7 @@ class $CONTROLLER_NAME$ extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $STORE$
-    }
+    $STORE$
 
     /**
      * Show the specified resource.
@@ -53,10 +52,7 @@ class $CONTROLLER_NAME$ extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        $UPDATE$
-    }
+    $UPDATE$
 
     /**
      * Remove the specified resource from storage.

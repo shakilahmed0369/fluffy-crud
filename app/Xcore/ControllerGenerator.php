@@ -2,151 +2,90 @@
 
 namespace App\Xcore;
 
-use Str;
+use Illuminate\Support\Str;
 
 class ControllerGenerator
 {
-
     public $coreArray;
     public $moduleName;
     public $controllerPath;
     public $controllerName;
 
-    function __construct($coreArray)
+    public function __construct($coreArray)
     {
         $this->coreArray = $coreArray;
-        $this->moduleName = $this->coreArray['module'];
+        $this->moduleName = $coreArray['module'];
         $this->controllerPath = module_path($this->moduleName, 'app/Http/Controllers');
-        $this->controllerName = $this->coreArray['model'] . 'Controller';
+        $this->controllerName = $coreArray['model'] . 'Controller';
     }
 
-    function generate()
+    public function generate()
     {
-        // $this->validator();
-        // $this->createModel();
-        $this->basicSetup();
-    }
 
-    function basicSetup()
-    {
         $template = file_get_contents(app_path('Xcore/src/app/Controller.stub'));
 
-        $template = str_replace('$MODULE_NAME$', $this->moduleName, $template);
-        $template = str_replace('$CONTROLLER_NAME$', $this->controllerName, $template);
-        $template = str_replace('$MODEL_NAME$', $this->coreArray['model'], $template);
-        $template = $this->generateIndex($template);
-        $template = $this->generateCreate($template);
-        $template = $this->generateStore($template);
-        $template = $this->generateEdit($template);
-        $template = $this->generateUpdate($template);
-        $template = $this->generateDelete($template);
-        $controllerFilePath = $this->controllerPath . '/' . $this->controllerName . '.php';
-        file_put_contents($controllerFilePath, $template);
+        $template = str_replace(['$MODULE_NAME$', '$CONTROLLER_NAME$', '$MODEL_NAME$'],
+                                [$this->moduleName, $this->controllerName, $this->coreArray['model']], $template);
+
+        $template = $this->generateAction($template, 'index');
+        $template = $this->generateAction($template, 'create');
+        $template = $this->generateAction($template, 'store');
+        $template = $this->generateAction($template, 'edit');
+        $template = $this->generateAction($template, 'update');
+        $template = $this->generateAction($template, 'delete');
+
+        file_put_contents("{$this->controllerPath}/{$this->controllerName}.php", $template);
     }
 
-    function generateIndex($template)
+    private function generateAction($template, $action)
     {
-        if ($this->coreArray['sub_folder']) {
-            $code = "
-        \$data = {$this->coreArray['model']}::all();
-        return view('" . Str::kebab($this->moduleName) . ":" . Str::kebab($this->coreArray['model']) . ".index', compact('data'));";
-            $template = str_replace('$INDEX$', $code, $template);
-        } else {
-
-            $code = "
-        \$data = {$this->coreArray['model']}::all();
-        return view('" . Str::kebab($this->moduleName) . ":index', compact('data'));";
-            $template = str_replace('$INDEX$', $code, $template);
-        }
-
-        return $template;
-    }
-
-    function generateCreate($template)
-    {
-        if ($this->coreArray['sub_folder']) {
-            $code = "
-        return view('" . Str::kebab($this->moduleName) . ":" . Str::kebab($this->coreArray['model']) . ".create');";
-            $template = str_replace('$CREATE$', $code, $template);
-        } else {
-            $code = "
-        return view('" . Str::kebab($this->moduleName) . ":create');";
-            $template = str_replace('$CREATE$', $code, $template);
-        }
-
-        return $template;
-    }
-
-    function generateStore($template)
-    {
-        $route = $this->coreArray['route'];
+        $viewPath = $this->getViewPath($action);
         $modelName = $this->coreArray['model'];
+        $view = Str::lower($this->moduleName) . '::' . $viewPath;
 
-        $code = "";
-        $code .= "\$data = new {$modelName}();\n\t\t";
+        $code = '';
+        if ($action === 'index') {
+            $code = "\$data = {$modelName}::all();\n\t\treturn view('$view', compact('data'));";
+        } elseif ($action === 'create') {
+            $code = "return view('$view');";
+        } elseif ($action === 'store' || $action === 'update') {
+            $code = $this->generateSaveCode($modelName, $action);
+        } elseif ($action === 'edit') {
+            $code = "\$data = {$modelName}::findOrFail(\$id);\n\t\treturn view('$view', compact('data'));";
+        } elseif ($action === 'delete') {
+            $code = "\$data = {$modelName}::findOrFail(\$id);\n\t\t\$data->delete();\n\t\treturn redirect()->route('{$this->coreArray['route']}.index');";
+        }
+
+        $template = str_replace('$' . strtoupper($action) . '$', $code, $template);
+
+        return $template;
+    }
+
+    private function generateSaveCode($modelName, $action)
+    {
+        $createRequest = $modelName.'CreateRequest';
+        $updateRequest = $modelName.'UpdateRequest';
+
+        $code = $action === 'store' ?
+            "public function store($createRequest \$request): RedirectResponse\n\t{\n\t\t\$data = new {$modelName}();\n\t\t" :
+
+            "public function update($updateRequest \$request, \$id): RedirectResponse\n\t{\n\t\t\$data = {$modelName}::findOrFail(\$id);\n\t\t";
+
         foreach ($this->coreArray['fields'] as $field) {
-            if ($field['type'] != 'column') {
+            if ($field['type'] !== 'column') {
                 $code .= "\$data->{$field['name']} = \$request->{$field['name']};\n\t\t";
             }
         }
-        $code .= "\$data->save();\n\n\t\t";
-        $code .= "return redirect()->route('{$route}.index');\n\t\t";
-
-        $template = str_replace('$STORE$', $code, $template);
-
-        return $template;
+        $code .= "\$data->save();\n\t\treturn redirect()->route('{$this->coreArray['route']}.index');\n\t}";
+        return $code;
     }
 
-    function generateEdit($template) {
-        $modelName = $this->coreArray['model'];
-
+    private function getViewPath($action)
+    {
+        $viewPath = $action;
         if ($this->coreArray['sub_folder']) {
-            $code = "
-        \$data = {$modelName}::findOrFail(\$id);\n
-        return view('" . Str::kebab($this->moduleName) . ":" . Str::kebab($this->coreArray['model']) . ".edit', compact('data'));";
-            $template = str_replace('$EDIT$', $code, $template);
-        } else {
-            $code = "
-        \$data = {$modelName}::findOrFail(\$id);
-        return view('" . Str::kebab($this->moduleName) . ":edit', compact('data'));";
-            $template = str_replace('$EDIT$', $code, $template);
+            $viewPath = Str::snake($this->coreArray['module']) . '.' . $action;
         }
-
-        return $template;
-    }
-
-    function generateUpdate($template)
-    {
-        $route = $this->coreArray['route'];
-        $modelName = $this->coreArray['model'];
-
-        $code = "";
-        $code .= "\$data = {$modelName}::findOrFail(\$id);\n\t\t";
-        foreach ($this->coreArray['fields'] as $field) {
-            if ($field['type'] != 'column') {
-                $code .= "\$data->{$field['name']} = \$request->{$field['name']};\n\t\t";
-            }
-        }
-        $code .= "\$data->save();\n\n\t\t";
-        $code .= "return redirect()->route('{$route}.index');\n\t\t";
-
-        $template = str_replace('$UPDATE$', $code, $template);
-
-        return $template;
-    }
-
-    function generateDelete($template)
-    {
-        $route = $this->coreArray['route'];
-        $modelName = $this->coreArray['model'];
-
-        $code = "";
-        $code .= "\$data = {$modelName}::findOrFail(\$id);\n\t\t";
-        $code .= "\$data->delete();\n\n\t\t";
-        $code .= "return redirect()->route('{$route}.index');\n\t\t";
-
-        $template = str_replace('$DELETE$', $code, $template);
-
-        return $template;
+        return $viewPath;
     }
 }

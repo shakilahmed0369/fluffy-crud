@@ -7,6 +7,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Test\app\Models\Test;
+use Modules\Test\app\Http\Requests\TestCreateRequest;
+use Modules\Test\app\Http\Requests\TestUpdateRequest;
 
 class TestController extends Controller
 {
@@ -15,9 +17,8 @@ class TestController extends Controller
      */
     public function index()
     {
-        
         $data = Test::all();
-        return view('test:index', compact('data'));
+		return view('test:test.index', compact('data'));
     }
 
     /**
@@ -25,25 +26,22 @@ class TestController extends Controller
      */
     public function create()
     {
-        
-        return view('test:create');
+        return view('test:test.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
-    {
-        $data = new Test();
+    public function store(TestCreateRequest $request): RedirectResponse
+	{
+		$data = new Test();
 		$data->category = $request->category;
 		$data->slug = $request->slug;
 		$data->status = $request->status;
 		$data->description = $request->description;
 		$data->save();
-
 		return redirect()->route('test.index');
-		
-    }
+	}
 
     /**
      * Show the specified resource.
@@ -58,26 +56,23 @@ class TestController extends Controller
      */
     public function edit($id)
     {
-        
         $data = Test::findOrFail($id);
-        return view('test:edit', compact('data'));
+		return view('test:test.edit', compact('data'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        $data = Test::findOrFail($id);
+    public function update(TestUpdateRequest $request, $id): RedirectResponse
+	{
+		$data = Test::findOrFail($id);
 		$data->category = $request->category;
 		$data->slug = $request->slug;
 		$data->status = $request->status;
 		$data->description = $request->description;
 		$data->save();
-
 		return redirect()->route('test.index');
-		
-    }
+	}
 
     /**
      * Remove the specified resource from storage.
@@ -86,8 +81,6 @@ class TestController extends Controller
     {
         $data = Test::findOrFail($id);
 		$data->delete();
-
 		return redirect()->route('test.index');
-		
     }
 }

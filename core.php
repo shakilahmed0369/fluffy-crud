@@ -1,9 +1,9 @@
 <?php
 
 return [
-    "module" => 'Test',
-    "model" => "Test",
-    "route" => "test",
+    "module" => 'ProductCategory',
+    "model" => "ProductCategory",
+    "route" => "admin.product-category",
     "sub_folder" => false,
 
     "fields" => [
@@ -13,45 +13,15 @@ return [
             "data_type" => "string",
             "validation" => ['required', 'max:255'],
             "default" => "",
-            "chain" => [
-                "nullable" => null
-            ]
-        ],
-        [
-            "type" => "text_field",
-            "name" => "slug",
-            "data_type" => "string",
-            "validation" => ['required', 'max:255'],
-            "default" => "",
-            "chain" => []
-        ],
-        [
-            "type" => "select_field",
-            "name" => "status",
-            "data_type" => "integer",
-            "validation" => ['required', 'boolean'],
-            "default" => [
-                ["name" => "Active", "value" => "active"],
-                ["name" => "Inactive", "value" => "inactive"],
-            ],
-            "chain" => ["default" => 0]
-        ],
-        [
-            "type" => "textarea_field",
-            "name" => "description",
-            "data_type" => "text",
-            "validation" => ['required', 'max:500'],
-            "default" => "",
             "chain" => []
         ],
         [
             "type" => "column",
-            "name" => "icon_id",
-            "data_type" => "foreignId",
-            "validation" => ['required', 'max:255'],
-            "chain" => [
-                "nullable" => true
-            ]
+            "name" => "slug",
+            "data_type" => "string",
+            "validation" => ['nullable', 'max:255'],
+            "default" => "",
+            "chain" => []
         ],
     ]
 ];

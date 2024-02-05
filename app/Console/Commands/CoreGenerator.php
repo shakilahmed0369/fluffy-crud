@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Xcore\ControllerGenerator;
 use App\Xcore\MigrationGenerator;
 use App\Xcore\ModelGenerator;
+use App\Xcore\RequestGenerator;
 use App\Xcore\Validator;
 use App\Xcore\ViewGenerator;
 use Illuminate\Console\Command;
@@ -36,16 +37,19 @@ class CoreGenerator extends Command
         // $validator->validaateBaseArray();
 
         $model = new ModelGenerator($this->baseArray());
-        // $model->generate();
+        $model->generate();
 
         $migration = new MigrationGenerator($this->baseArray());
-        // $migration->generate();
+        $migration->generate();
 
         $view = new ViewGenerator($this->baseArray());
-        // $view->generate();
+        $view->generate();
 
         $controller = new ControllerGenerator($this->baseArray());
         $controller->generate();
+
+        $request = new RequestGenerator($this->baseArray());
+        $request->generate();
     }
 
     /**
