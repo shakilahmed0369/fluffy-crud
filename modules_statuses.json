@@ -22,5 +22,6 @@
     "OurTeam": true,
     "Testimonial": true,
     "Faq": true,
-    "Test": true
+    "Test": true,
+    "ProductCategory": true
 }

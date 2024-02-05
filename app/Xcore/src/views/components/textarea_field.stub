@@ -2,7 +2,7 @@
                                                 <div class="form-group">
                                                     <label for="title">{{ __('$LABEL$') }}<span
                                                             class="text-danger">$REQUIRED$</span></label>
-                                                    <textarea name="$NAME$" class="form-control" >$VALUE$</textarea>
+                                                    <textarea name="$NAME$" class="form-control" >{{ $VALUE$ }}</textarea>
                                                     @error('$NAME$')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror

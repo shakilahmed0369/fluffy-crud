@@ -21,7 +21,55 @@ class ViewGenerator
     {
         $this->createView();
         $this->editView();
+        $this->indexView();
     }
+
+    function indexView()
+    {
+        $template = file_get_contents(app_path('Xcore/src/views/index.stub'));
+
+        // Replace placeholders with dynamic values
+        $modelName = $this->coreArray['model'];
+        $routeName = $this->coreArray['route'];
+
+        // Retrieve fields from coreArray
+        $fields = $this->coreArray['fields'];
+
+        // Replace $TABLE$ placeholder with dynamic table structure
+        $template = str_replace('$TABLE$', "
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (\$data as \$item)
+                <tr>
+                    <td>{{ \$loop->iteration }}</td>
+                    <td>
+                        <a href=\"{{ route('$routeName.edit', \$item->id) }}\" class=\"btn btn-sm btn-primary\">Edit</a>
+                        <form action=\"{{ route('$routeName.destroy', \$item->id) }}\" method=\"POST\" style=\"display: inline-block;\">
+                            @csrf
+                            @method('DELETE')
+                            <button type=\"submit\" class=\"btn btn-sm btn-danger\" onclick=\"return confirm('Are you sure you want to delete this item?')\">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    ", $template);
+
+        $template = str_replace('$MODEL$', $this->coreArray['model'], $template);
+        $template = str_replace('$ROUTE$', $routeName, $template);
+
+        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $routeName . '/index.blade.php' : $this->viewPath . '/index.blade.php';
+        if (!file_exists(dirname($modelFilePath))) {
+            mkdir(dirname($modelFilePath), 0777, true);
+        }
+        file_put_contents($modelFilePath, $template);
+    }
+
 
     public function createView()
     {
@@ -74,7 +122,8 @@ class ViewGenerator
     public function editView()
     {
         $template = file_get_contents(app_path('Xcore/src/views/edit.blade.stub'));
-        $variableName = Str::snake($this->coreArray['model']);
+        // $variableName = Str::snake($this->coreArray['model']);
+        $variableName = 'data';
         $fieldsHtml = "";
 
         foreach ($this->coreArray['fields'] as $entity) {
@@ -85,7 +134,7 @@ class ViewGenerator
                     $componentStub = file_get_contents(app_path('Xcore/src/views/components/' . $entity['type'] . '.stub'));
                     $componentStub = str_replace('$LABEL$', $label, $componentStub);
                     $componentStub = str_replace('$NAME$', $entity['name'], $componentStub);
-                    $componentStub = str_replace('$VALUE$', '{{ $' . $variableName . '->' . $entity['name'] . ' }}', $componentStub);
+                    $componentStub = str_replace('$VALUE$', '$' . $variableName . '->' . $entity['name'], $componentStub);
                     $componentStub = str_replace('$REQUIRED$', in_array('required', $entity['validation']) ? '*' : '', $componentStub);
                     $fieldsHtml .= $componentStub . "\n";
                     break;

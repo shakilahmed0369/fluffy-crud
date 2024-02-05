@@ -1,3 +1,4 @@
+
 @extends('admin.master_layout')
 
 @section('title')
@@ -25,23 +26,19 @@
                             <div class="card-header d-flex justify-content-between">
                                 <h4>{{ __('Add Category') }}</h4>
                                 <div>
-                                    <a href="{{ route('$ROUTE$.index') }}" class="btn btn-primary"><i
-                                            class="fa fa-arrow-left"></i>{{ __('Back') }}</a>
+                                    <a href="{{ route('$ROUTE$.create') }}" class="btn btn-primary"><i
+                                            class="fa fa-plus"></i>{{ __('Create New') }}</a>
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('$ROUTE$.store') }}" method="post">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-12">
+                                <div class="table-responsive max-h-400">
+                                    <table class="table table-striped">
+                                    $TABLE$
+                                    </table>
+                                </div>
+                                <div class="float-right">
 
-$FIELDS$
-
-                                            <x-admin.save-button :text="__('admin.Save')">
-                                            </x-admin.save-button>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

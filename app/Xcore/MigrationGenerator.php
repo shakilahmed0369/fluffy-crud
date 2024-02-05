@@ -29,7 +29,7 @@ class MigrationGenerator
     function createMigration()
     {
         $template = file_get_contents(app_path('Xcore/src/app/Migration.stub'));
-        $template = str_replace('$TABLE_NAME$', $this->tableName, $template);
+        $template = str_replace('$TABLE_NAME$', $this->pluralizedName($this->tableName), $template);
         $template = str_replace('$COLUMNS$', $this->generateColumns(), $template);
 
         $migrationFileName = $this->generateMigrationName($this->tableName);
@@ -49,7 +49,7 @@ class MigrationGenerator
             switch ($entity['type']) {
                 case 'text_field':
                     $chains = $this->processChain($entity['chain']);
-                    $columns .= '$table->'.$entity['data_type'].'("' . Str::snake($entity['name']) . '")' . $chains . ";" .  "\n\t\t\t";
+                    $columns .= '$table->' . $entity['data_type'] . '("' . Str::snake($entity['name']) . '")' . $chains . ";" .  "\n\t\t\t";
                     break;
 
                 case 'column':
@@ -79,15 +79,23 @@ class MigrationGenerator
         return $chains;
     }
 
+
     function generateMigrationName($name)
     {
         // Generate a timestamp to include in the migration filename
         $timestamp = now()->format('Y_m_d_His');
-        $pluralizedName = Str::plural($name);
+
+        $pluralizedName = $this->pluralizedName($name);
 
         // Generate the migration filename format
-        $migrationName = $timestamp . '_create_' . str_replace(' ', '_', strtolower($pluralizedName)) . '_table';
+        $migrationName = $timestamp . '_create_' . $pluralizedName . '_table';
+
         return $migrationName;
+    }
+
+    function pluralizedName($name) {
+        $pluralizedName = Str::pluralStudly($name);
+        return  Str::snake($pluralizedName);
     }
 
     function validator()
