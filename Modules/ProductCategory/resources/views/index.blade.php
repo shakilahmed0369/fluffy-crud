@@ -37,6 +37,9 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>category</th>
+				<th>slug</th>
+				
                 <th>Actions</th>
             </tr>
         </thead>
@@ -44,6 +47,9 @@
             @foreach ($data as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>{{ $item->category }}</td>
+					<td>{{ $item->slug }}</td>
+					
                     <td>
                         <a href="{{ route('admin.product-category.edit', $item->id) }}" class="btn btn-sm btn-primary">Edit</a>
                         <form action="{{ route('admin.product-category.destroy', $item->id) }}" method="POST" style="display: inline-block;">

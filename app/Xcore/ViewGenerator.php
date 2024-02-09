@@ -35,11 +35,27 @@ class ViewGenerator
         // Retrieve fields from coreArray
         $fields = $this->coreArray['fields'];
 
+        $tableHeaders = "";
+        $tableData = "";
+
+        foreach($fields as $field) {
+            if(isset($field['show_at_table']) && $field['show_at_table']) {
+                $tableHeaders .= "<th>{$field['name']}</th>\n\t\t\t\t";
+            }
+        }
+
+        foreach($fields as $field) {
+            if(isset($field['show_at_table']) && $field['show_at_table']) {
+                $tableData .= "<td>{{ \$item->{$field['name']} }}</td>\n\t\t\t\t\t";
+            }
+        }
+
         // Replace $TABLE$ placeholder with dynamic table structure
         $template = str_replace('$TABLE$', "
         <thead>
             <tr>
                 <th>#</th>
+                $tableHeaders
                 <th>Actions</th>
             </tr>
         </thead>
@@ -47,6 +63,7 @@ class ViewGenerator
             @foreach (\$data as \$item)
                 <tr>
                     <td>{{ \$loop->iteration }}</td>
+                    $tableData
                     <td>
                         <a href=\"{{ route('$routeName.edit', \$item->id) }}\" class=\"btn btn-sm btn-primary\">Edit</a>
                         <form action=\"{{ route('$routeName.destroy', \$item->id) }}\" method=\"POST\" style=\"display: inline-block;\">

@@ -13,7 +13,8 @@ return [
             "data_type" => "string",
             "validation" => ['required', 'max:255'],
             "default" => "",
-            "chain" => []
+            "chain" => [],
+            "show_at_table" => true
         ],
         [
             "type" => "column",
@@ -21,7 +22,8 @@ return [
             "data_type" => "string",
             "validation" => ['nullable', 'max:255'],
             "default" => "",
-            "chain" => []
+            "chain" => [],
+            "show_at_table" => true
         ],
     ]
 ];
