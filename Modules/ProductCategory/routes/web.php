@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Modules\ProductCategory\app\Http\Controllers\HelloWorldController;
 use Modules\ProductCategory\app\Http\Controllers\ProductCategoryController;
 
 /*
@@ -16,4 +17,5 @@ use Modules\ProductCategory\app\Http\Controllers\ProductCategoryController;
 
 Route::group([], function () {
     Route::resource('product-category', ProductCategoryController::class)->names('admin.product-category');
+    Route::resource('admin/hello-world', HelloWorldController::class)->names('admin.hello-world');
 });

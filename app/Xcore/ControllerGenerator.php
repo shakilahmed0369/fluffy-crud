@@ -84,7 +84,7 @@ class ControllerGenerator
     {
         $viewPath = $action;
         if ($this->coreArray['sub_folder']) {
-            $viewPath = Str::snake($this->coreArray['module']) . '.' . $action;
+            $viewPath = $this->coreArray['model'] . '.' . $action;
         }
         return $viewPath;
     }

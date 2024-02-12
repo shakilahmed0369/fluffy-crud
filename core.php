@@ -2,9 +2,9 @@
 
 return [
     "module" => 'ProductCategory',
-    "model" => "ProductCategory",
-    "route" => "admin.product-category",
-    "sub_folder" => false,
+    "model" => "HelloWorld",
+    "route" => "admin.hello-world",
+    "sub_folder" => true,
 
     "fields" => [
         [
@@ -13,16 +13,7 @@ return [
             "data_type" => "string",
             "validation" => ['required', 'max:255'],
             "default" => "",
-            "chain" => [],
-            "show_at_table" => true
-        ],
-        [
-            "type" => "column",
-            "name" => "slug",
-            "data_type" => "string",
-            "validation" => ['nullable', 'max:255'],
-            "default" => "",
-            "chain" => [],
+            "chain" => ['default' => 1],
             "show_at_table" => true
         ],
     ]

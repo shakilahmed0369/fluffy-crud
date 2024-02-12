@@ -80,7 +80,7 @@ class ViewGenerator
         $template = str_replace('$MODEL$', $this->coreArray['model'], $template);
         $template = str_replace('$ROUTE$', $routeName, $template);
 
-        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $routeName . '/index.blade.php' : $this->viewPath . '/index.blade.php';
+        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $modelName . '/index.blade.php' : $this->viewPath . '/index.blade.php';
         if (!file_exists(dirname($modelFilePath))) {
             mkdir(dirname($modelFilePath), 0777, true);
         }
@@ -124,12 +124,14 @@ class ViewGenerator
             }
         }
 
+        $modelName = $this->coreArray['model'];
         $routeName = Str::snake($this->coreArray['route']);
+
         $template = str_replace('$MODEL$', $this->coreArray['model'], $template);
         $template = str_replace('$ROUTE$', $routeName, $template);
         $template = str_replace('$FIELDS$', $fieldsHtml, $template);
 
-        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $routeName . '/create.blade.php' : $this->viewPath . '/create.blade.php';
+        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $modelName . '/create.blade.php' : $this->viewPath . '/create.blade.php';
         if (!file_exists(dirname($modelFilePath))) {
             mkdir(dirname($modelFilePath), 0777, true);
         }
@@ -176,12 +178,14 @@ class ViewGenerator
         }
 
         $routeName = Str::snake($this->coreArray['route']);
+        $modelName = $this->coreArray['model'];
+
         $template = str_replace('$MODEL$', $this->coreArray['model'], $template);
         $template = str_replace('$ROUTE$', $routeName, $template);
         $template = str_replace('$FIELDS$', $fieldsHtml, $template);
         $template = str_replace('$ID$', '$' . $variableName . '->id', $template);
 
-        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $routeName . '/edit.blade.php' : $this->viewPath . '/edit.blade.php';
+        $modelFilePath = $this->coreArray['sub_folder'] ? $this->viewPath . '/' . $modelName . '/edit.blade.php' : $this->viewPath . '/edit.blade.php';
         if (!file_exists(dirname($modelFilePath))) {
             mkdir(dirname($modelFilePath), 0777, true);
         }
