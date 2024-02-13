@@ -48,6 +48,8 @@ class MigrationGenerator
         foreach ($this->coreArray['fields'] as $entity) {
             switch ($entity['type']) {
                 case 'text_field':
+                case 'textarea_field':
+                case 'select_field':
                     $chains = $this->processChain($entity['chain']);
                     $columns .= '$table->' . $entity['data_type'] . '("' . Str::snake($entity['name']) . '")' . $chains . ";" .  "\n\t\t\t";
                     break;

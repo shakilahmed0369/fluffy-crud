@@ -102,6 +102,7 @@ class ViewGenerator
                     $componentStub = str_replace('$LABEL$', $label, $componentStub);
                     $componentStub = str_replace('$NAME$', $entity['name'], $componentStub);
                     $componentStub = str_replace('$VALUE$', $entity['default'] ?? '', $componentStub);
+                    $componentStub = str_replace('$TEXT_VALUE$', $entity['default'] ? "{{ {$entity['default']} }}" : '', $componentStub);
                     $componentStub = str_replace('$REQUIRED$', in_array('required', $entity['validation']) ? '*' : '', $componentStub);
                     $fieldsHtml .= $componentStub . "\n";
                     break;
@@ -154,6 +155,7 @@ class ViewGenerator
                     $componentStub = str_replace('$LABEL$', $label, $componentStub);
                     $componentStub = str_replace('$NAME$', $entity['name'], $componentStub);
                     $componentStub = str_replace('$VALUE$', '$' . $variableName . '->' . $entity['name'], $componentStub);
+                    $componentStub = str_replace('$TEXT_VALUE$', '{{ $' . $variableName . '->' . $entity['name'] . ' }}', $componentStub);
                     $componentStub = str_replace('$REQUIRED$', in_array('required', $entity['validation']) ? '*' : '', $componentStub);
                     $fieldsHtml .= $componentStub . "\n";
                     break;

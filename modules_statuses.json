@@ -20,8 +20,8 @@
     "ClubPoint": true,
     "PaymentWithdraw": true,
     "OurTeam": true,
-    "Testimonial": true,
     "Faq": true,
     "Test": true,
-    "ProductCategory": true
+    "ProductCategory": true,
+    "Testimonial": true
 }

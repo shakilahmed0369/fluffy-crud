@@ -3,10 +3,17 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Testimonial\app\Http\Controllers\TestimonialController;
 
-Route::middleware(['auth:admin', 'translation'])
-    ->name('admin.')
-    ->prefix('admin')
-    ->group(function () {
-        Route::resource('testimonial', TestimonialController::class)->names('testimonial');
-        Route::put('/testimonial/status-update/{id}', [TestimonialController::class, 'statusUpdate'])->name('testimonial.status-update');
-    });
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+
+Route::group([], function () {
+    Route::resource('admin/testimonial', TestimonialController::class)->names('admin.testimonial');
+});
