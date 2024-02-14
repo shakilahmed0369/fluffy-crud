@@ -1,10 +1,10 @@
 <?php
 
 return [
-    "module" => 'Testimonial',
-    "model" => "Testimonial",
-    "route" => "admin.testimonial",
-    "sub_folder" => false,
+    "module" => 'Product',
+    "model" => "ProductCategory",
+    "route" => "admin.product-category",
+    "sub_folder" => true,
 
     "fields" => [
         [
@@ -17,19 +17,10 @@ return [
             "show_at_table" => true
         ],
         [
-            "type" => "text_field",
-            "name" => "title",
+            "type" => "column",
+            "name" => "slug",
             "data_type" => "string",
-            "validation" => ['required', 'max:50'],
-            "default" => "",
-            "chain" => [],
-            "show_at_table" => true
-        ],
-        [
-            "type" => "textarea_field",
-            "name" => "review",
-            "data_type" => "text",
-            "validation" => ['required'],
+            "validation" => ['required', 'max:255'],
             "default" => "",
             "chain" => [],
         ],
@@ -37,12 +28,14 @@ return [
             "type" => "select_field",
             "name" => "status",
             "data_type" => "boolean",
-            "validation" => ['required'],
+            "validation" => ['required', 'boolean'],
             "default" => [
-                ['name' => 'Active', 'value' => '1'],
+                ['name' => 'Select', 'value' => ''],
                 ['name' => 'Inactive', 'value' => '0'],
+                ['name' => 'Active', 'value' => '1'],
             ],
-            "chain" => ['default' => 0],
+            "chain" => [],
+            "show_at_table" => true
         ],
     ]
 ];

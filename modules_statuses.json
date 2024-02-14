@@ -23,5 +23,6 @@
     "Faq": true,
     "Test": true,
     "ProductCategory": true,
-    "Testimonial": true
+    "Testimonial": true,
+    "Product": true
 }

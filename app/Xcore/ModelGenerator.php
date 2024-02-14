@@ -20,7 +20,7 @@ class ModelGenerator
 
     function generate()
     {
-        // $this->validator();
+        $this->validator();
         $this->createModel();
     }
 

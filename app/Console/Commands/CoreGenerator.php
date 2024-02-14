@@ -34,7 +34,7 @@ class CoreGenerator extends Command
     {
         // validate core array structure
         $validator = new Validator($this->baseArray());
-        // $validator->validaateBaseArray();
+        $validator->validaateBaseArray();
 
         $model = new ModelGenerator($this->baseArray());
         $model->generate();
